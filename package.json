@@ -1,0 +1,14 @@
+{
+  "name": "evolution-js",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "sudoku": "ts-node src/examples/sudoku/main.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "ts-node": "^10.9.2"
+  }
+}
