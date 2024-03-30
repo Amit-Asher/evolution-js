@@ -103,8 +103,8 @@ export abstract class AbstractEvolutionEngine<S> {
     public abstract generateSolution(): S;
 
     /**
-     * create a new child from 2 parents.
-     * the child will be a combination of the parents (crossover).
+     * create 2 new children from 2 parents.
+     * the children will be a combination of the parents (crossover).
      * it resamble the natural selection in the genetic algorithm.
      * @param parent1 T
      * @param parent2 T
@@ -114,7 +114,7 @@ export abstract class AbstractEvolutionEngine<S> {
 
     /**
      * mutate a single solution.
-     * * WARNING: be careful not to mutate the problem itself.
+     * NOTE: avoid from mutating the problem characteristics.
      * @param solution T
      * @returns T
      */

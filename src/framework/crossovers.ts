@@ -2,6 +2,15 @@ import crypto from 'crypto';
 
 export type Matrix<T> = T[][];
 
+/**
+ * Row-wise matrix crossover
+ * - Randomly choose a crossover point
+ * - Copy rows up to the crossover point from parent1 to offspring1 and from parent2 to offspring2
+ * - Copy rows after the crossover point from parent2 to offspring1 and from parent1 to offspring2
+ * @param parent1 
+ * @param parent2 
+ * @returns 
+ */
 export function rowWiseMatrixCrossover<T>(
     parent1: Matrix<T>,
     parent2: Matrix<T>
