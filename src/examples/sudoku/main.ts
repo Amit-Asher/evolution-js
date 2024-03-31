@@ -1,17 +1,17 @@
 import { SudokuEvolutionEngine, Sudoku } from "./sudoku-evolution-engine";
-import { createSudokuPuzzle, printSudoku } from "./utils";
+import { createSudokuPuzzle, poissonDistribution, printSudoku } from "./utils";
 
 const sudoku: Sudoku = createSudokuPuzzle({
-    emptyCellsCount: 50
+    emptyCellsCount: 43
 });
 
 printSudoku(sudoku);
 console.log('Solving...');
 
 const engine = new SudokuEvolutionEngine({
-    populationSize: 5000,
+    populationSize: 10000,
     maxGenerations: 2000,
-    elitism: 250,
+    elitism: 1000,
     bestDirection: 'min',
     puzzle: sudoku
 });

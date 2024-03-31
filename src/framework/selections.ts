@@ -1,5 +1,5 @@
+import { randInt } from "../examples/sudoku/utils";
 import { EvaluatedIndividual } from "./abstract-evolution-engine";
-import crypto from 'crypto';
 
 /**
  * Tournament selection implementation
@@ -18,17 +18,15 @@ export function tournamentSelection<T>(
 ): EvaluatedIndividual<T>[] {
     const newPopulation: EvaluatedIndividual<T>[] = [];
     for (let i = 0; i < selectionCount; i++) {
-        const firstCompetitorIdx = crypto.randomInt(0, population.length)
-        const secondCompetitorIdx = crypto.randomInt(0, population.length)
+        const firstCompetitorIdx = randInt(0, population.length)
+        const secondCompetitorIdx = randInt(0, population.length)
 
         const firstCompetitor = population[firstCompetitorIdx];
         const secondCompetitor = population[secondCompetitorIdx];
 
         if (fitnessDirection === 'min') {
             newPopulation.push(firstCompetitor.fitness < secondCompetitor.fitness ? firstCompetitor : secondCompetitor);
-        }
-
-        if (fitnessDirection === 'max') {
+        } else {
             newPopulation.push(firstCompetitor.fitness > secondCompetitor.fitness ? firstCompetitor : secondCompetitor);
         }
     }

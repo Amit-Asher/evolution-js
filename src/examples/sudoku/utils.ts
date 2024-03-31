@@ -1,5 +1,5 @@
+import MersenneTwister from "mersenne-twister";
 import { Sudoku } from "./sudoku-evolution-engine";
-import crypto from 'crypto';
 
 // Function to check if a number can be placed in a given position in the grid
 function isValid(sudoku: Sudoku, row: number, col: number, num: number) {
@@ -38,7 +38,7 @@ function completeSudoku(sudoku: Sudoku) {
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     // Shuffle the array to introduce randomness
     for (let i = numbers.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = randInt(0, i + 1);
         [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
     }
 
@@ -107,7 +107,7 @@ export function fillEmptyCellsRowWise(sudoku: Sudoku): void {
 
         const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         const missingInRow = numbers.filter((num) => !sudoku[j].includes(num));
-        missingInRow.sort(() => crypto.randomInt(-1, 1)); // shuffle the array
+        missingInRow.sort(() => randInt(0, 2) - 1);
 
         for (let k = 0; k < 9; k++) {
             // if the cell is empty, fill it with a random number
@@ -141,9 +141,9 @@ export function createSudokuPuzzle(input: CreateSudokuPuzzleInput): Sudoku {
 
     // remove some numbers from the solved grid to create a puzzle
     let emptyCellsCount = input.emptyCellsCount;
-    while(emptyCellsCount > 0) {
-        const row = crypto.randomInt(9);
-        const col = crypto.randomInt(9);
+    while (emptyCellsCount > 0) {
+        const row = randInt(0, 9);
+        const col = randInt(0, 9);
         if (newSudoku[row][col] !== 0) {
             newSudoku[row][col] = 0;
             emptyCellsCount--;
@@ -151,4 +151,29 @@ export function createSudokuPuzzle(input: CreateSudokuPuzzleInput): Sudoku {
     }
 
     return newSudoku
+}
+
+/**
+ * inclusive of low
+ * exclusive of high
+ */
+const seed = 1234 // Math.floor(Math.random() * 10000);
+console.log('seed:', seed);
+const rng = new MersenneTwister(seed);
+export function randInt(low: number, high: number): number {
+    return Math.floor(rng.random() * (high - low) + low);
+}
+
+export function poissonDistribution(): number {
+    let x = 0;
+    let t = 0.0;
+    const MEAN = 2;
+    while (true) {
+        t -= Math.log(rng.random()) / MEAN;
+        if (t > 1.0) {
+            break;
+        }
+        ++x;
+    }
+    return x;
 }

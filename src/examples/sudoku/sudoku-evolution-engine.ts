@@ -1,5 +1,4 @@
-import crypto from 'crypto';
-import { copySudoku, fillEmptyCellsRowWise } from "./utils";
+import { copySudoku, fillEmptyCellsRowWise, poissonDistribution, randInt } from "./utils";
 import { Crossovers } from "../../framework/crossovers";
 import { Selections } from "../../framework/selections";
 import { AbstractEvolutionEngine, EngineConfig, EvaluatedIndividual, EvaluatedPopulation } from '../../framework/abstract-evolution-engine';
@@ -12,6 +11,7 @@ export type Sudoku = number[][];
 
 export class SudokuEvolutionEngine extends AbstractEvolutionEngine<Sudoku> {
     private puzzle: Sudoku;
+    private rowsToMutate: { numbers: number[], idx: number }[];
 
     public constructor(config: SudokuEngineConfig) {
         super({
@@ -20,8 +20,8 @@ export class SudokuEvolutionEngine extends AbstractEvolutionEngine<Sudoku> {
             elitism: config.elitism || 250,
             bestDirection: 'min'
         });
-
         this.puzzle = config.puzzle;
+        this.rowsToMutate = this.puzzle.map((row, idx) => ({ numbers: row, idx })).filter(({ numbers }) => numbers.length > 1);
     }
 
     public generateSolution(): Sudoku {
@@ -114,10 +114,10 @@ export class SudokuEvolutionEngine extends AbstractEvolutionEngine<Sudoku> {
         }
 
         subGridStartCol = Math.floor(colToSwap2 / 3) * 3;
-        for (let k = subGridStartRow; k < subGridStartRow + 3; k++) {
-            for (let l = subGridStartCol; l < subGridStartCol + 3; l++) {
+        for (let row = subGridStartRow; row < subGridStartRow + 3; row++) {
+            for (let col = subGridStartCol; col < subGridStartCol + 3; col++) {
                 // remove conflict between a fixed cell in the sub-grid of cell2 to cell2
-                if (this.isCellFixed(k, l) && solution[k][l] === solution[rowToMutate][colToSwap2]) {
+                if (this.isCellFixed(row, col) && solution[row][col] === solution[rowToMutate][colToSwap2]) {
                     return true;
                 }
             }
@@ -126,15 +126,24 @@ export class SudokuEvolutionEngine extends AbstractEvolutionEngine<Sudoku> {
         return false;
     }
 
+
     public mutate(solution: Sudoku): Sudoku {
-        let mutationCount = 1;
+        let mutationCount = poissonDistribution();
 
         while (mutationCount > 0) {
-            let rowToMutate = crypto.randomInt(0, 9);
-            let idx1 = crypto.randomInt(0, 9);
-            let idx2 = crypto.randomInt(0, 9);
-            if (
-                !this.isSwapAddFixedConflict(solution, rowToMutate, idx1, idx2) ||
+            let rowToMutate = this.rowsToMutate[randInt(0, this.rowsToMutate.length)].idx;
+            let rowNumbers = this.rowsToMutate.find(({ idx }) => idx === rowToMutate)?.numbers;
+            if (!rowNumbers) {
+                continue;
+            }
+
+            const rowNumbersShuffled = rowNumbers.map(n => n);
+            rowNumbersShuffled.sort(() => randInt(0, 2) - 1);
+
+            const idx1 = rowNumbersShuffled[0];
+            const idx2 = rowNumbersShuffled[1];
+
+            if (!this.isSwapAddFixedConflict(solution, rowToMutate, idx1, idx2) ||
                 this.isSwapRemoveFixedConflict(solution, rowToMutate, idx1, idx2)
             ) {
                 // Swap the values

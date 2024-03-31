@@ -1,6 +1,21 @@
 import crypto from 'crypto';
+import { randInt } from '../examples/sudoku/utils';
 
 export type Matrix<T> = T[][];
+
+function copyMatrix<T>(matrix: Matrix<T>): Matrix<T> {
+    const copy: Matrix<T> = [];
+
+    for (let i = 0; i < matrix.length; i++) {
+        const row: T[] = [];
+        for (let j = 0; j < matrix[i].length; j++) {
+            row.push(matrix[i][j]);
+        }
+        copy.push(row);
+    }
+
+    return copy;
+}
 
 /**
  * Row-wise matrix crossover
@@ -15,38 +30,23 @@ export function rowWiseMatrixCrossover<T>(
     parent1: Matrix<T>,
     parent2: Matrix<T>
 ): Matrix<T>[] {
-    const offspring1: Matrix<T> = [];
-    const offspring2: Matrix<T> = [];
+    let offspring1: Matrix<T> = copyMatrix(parent1);
+    let offspring2: Matrix<T> = copyMatrix(parent2);
 
-    // Randomly choose a crossover point
-    const crossoverPoint = crypto.randomInt(parent1.length);
+    let crossoverCount = 1;
 
-    // Copy rows up to the crossover point
-    for (let i = 0; i < crossoverPoint; i++) {
-        const newRow1: T[] = [];
-        const newRow2: T[] = [];
-
-        for (let j = 0; j < parent1[i].length; j++) {
-            newRow1.push(parent1[i][j]);
-            newRow2.push(parent2[i][j]);
-        }
+    while(crossoverCount > 0) {
         
-        offspring1.push(newRow1);
-        offspring2.push(newRow2);
-    }
-
-    // Copy rows after the crossover point
-    for (let i = crossoverPoint; i < parent1.length; i++) {
-        const newRow1: T[] = [];
-        const newRow2: T[] = [];
-
-        for (let j = 0; j < parent1[i].length; j++) {
-            newRow1.push(parent2[i][j]);
-            newRow2.push(parent1[i][j]);
+        const crossoverPoint = randInt(0, parent1.length);
+        // Copy rows up to the crossover point
+        for (let i = 0; i < crossoverPoint; i++) {
+            // Randomly choose a crossover point
+            const tmp: T[] = offspring1[i];
+            offspring1[i] = offspring2[i];
+            offspring2[i] = tmp;
         }
 
-        offspring1.push(newRow1);
-        offspring2.push(newRow2);
+        crossoverCount--;
     }
 
     return [offspring1, offspring2];
