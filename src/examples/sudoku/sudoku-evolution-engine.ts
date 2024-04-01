@@ -1,4 +1,5 @@
-import { copySudoku, fillEmptyCellsRowWise, poissonDistribution, randInt } from "./utils";
+import { copySudoku, fillEmptyCellsRowWise } from "./sudoku-utils";
+import { randInt, poissonDistribution } from "../../framework/common";
 import { Crossovers } from "../../framework/crossovers";
 import { Selections } from "../../framework/selections";
 import { AbstractEvolutionEngine, EngineConfig, EvaluatedIndividual, EvaluatedPopulation } from '../../framework/abstract-evolution-engine';
@@ -138,7 +139,7 @@ export class SudokuEvolutionEngine extends AbstractEvolutionEngine<Sudoku> {
             }
 
             const rowNumbersShuffled = rowNumbers.map(n => n);
-            rowNumbersShuffled.sort(() => randInt(0, 2) - 1);
+            rowNumbersShuffled.sort(() => randInt(0, 2) === 0 ? -1 : 1);
 
             const idx1 = rowNumbersShuffled[0];
             const idx2 = rowNumbersShuffled[1];

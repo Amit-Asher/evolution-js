@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { randInt } from '../examples/sudoku/utils';
+import { randInt } from './common';
 
 export interface Individual<T> {
     solution: T,
@@ -232,7 +232,7 @@ export abstract class AbstractEvolutionEngine<S> {
         );
 
         // shuffle the selected population.
-        selectedPopulation.sort(() => randInt(0, 2) - 1);
+        selectedPopulation.sort(() => randInt(0, 2) === 0 ? -1 : 1);
 
         for (let j = 0; j < selectedPopulation.length; j += 2) {
             // take 2 parents (random parents because of shuffling)

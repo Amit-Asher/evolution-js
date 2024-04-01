@@ -1,5 +1,5 @@
-import { randInt } from "../examples/sudoku/utils";
 import { EvaluatedIndividual } from "./abstract-evolution-engine";
+import { randInt } from "./common";
 
 /**
  * Tournament selection implementation

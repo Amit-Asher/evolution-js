@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { randInt } from '../examples/sudoku/utils';
+import { randInt } from './common';
 
 export type Matrix<T> = T[][];
 
@@ -52,6 +52,42 @@ export function rowWiseMatrixCrossover<T>(
     return [offspring1, offspring2];
 }
 
+
+export interface PropertyToCrossover<T> {
+    [prop: string]: T;
+}
+
+export function propertyCrossover<T>(
+    parent1: PropertyToCrossover<T>,
+    parent2: PropertyToCrossover<T>
+): PropertyToCrossover<T>[] {
+    const offspring1: PropertyToCrossover<T> = Object.assign({}, parent1);
+    const offspring2: PropertyToCrossover<T> = Object.assign({}, parent2);
+
+    let crossoverCount = 1;
+
+    while(crossoverCount > 0) {
+        
+        const crossoverPoint = randInt(0, Object.keys(parent1).length);
+        const entries1 = Object.entries(parent1);
+        const entries2 = Object.entries(parent2);
+
+        // Copy rows up to the crossover point
+        for (let i = 0; i < crossoverPoint; i++) {
+            // Randomly choose a crossover point
+            const [key1, value1] = entries1[i];
+            const [key2, value2] = entries2[i];
+            offspring1[key2] = value2;
+            offspring2[key1] = value1;
+        }
+
+        crossoverCount--;
+    }
+
+    return [offspring1, offspring2];
+}
+
 export const Crossovers = {
-    rowWiseMatrixCrossover
+    rowWiseMatrixCrossover,
+    propertyCrossover
 };

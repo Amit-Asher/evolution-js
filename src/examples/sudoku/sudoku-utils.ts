@@ -1,5 +1,6 @@
 import MersenneTwister from "mersenne-twister";
 import { Sudoku } from "./sudoku-evolution-engine";
+import { randInt } from "../../framework/common";
 
 // Function to check if a number can be placed in a given position in the grid
 function isValid(sudoku: Sudoku, row: number, col: number, num: number) {
@@ -107,7 +108,7 @@ export function fillEmptyCellsRowWise(sudoku: Sudoku): void {
 
         const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         const missingInRow = numbers.filter((num) => !sudoku[j].includes(num));
-        missingInRow.sort(() => randInt(0, 2) - 1);
+        missingInRow.sort(() => randInt(0, 2) === 0 ? -1 : 1);
 
         for (let k = 0; k < 9; k++) {
             // if the cell is empty, fill it with a random number
@@ -151,29 +152,4 @@ export function createSudokuPuzzle(input: CreateSudokuPuzzleInput): Sudoku {
     }
 
     return newSudoku
-}
-
-/**
- * inclusive of low
- * exclusive of high
- */
-const seed = 1234 // Math.floor(Math.random() * 10000);
-console.log('seed:', seed);
-const rng = new MersenneTwister(seed);
-export function randInt(low: number, high: number): number {
-    return Math.floor(rng.random() * (high - low) + low);
-}
-
-export function poissonDistribution(): number {
-    let x = 0;
-    let t = 0.0;
-    const MEAN = 2;
-    while (true) {
-        t -= Math.log(rng.random()) / MEAN;
-        if (t > 1.0) {
-            break;
-        }
-        ++x;
-    }
-    return x;
 }

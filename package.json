@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "sudoku": "ts-node src/examples/sudoku/main.ts"
+    "sudoku": "ts-node src/examples/sudoku/main.ts",
+    "sat": "ts-node src/examples/3-sat/main.ts"
   },
   "author": "",
   "license": "ISC",

@@ -1,5 +1,5 @@
 import { SudokuEvolutionEngine, Sudoku } from "./sudoku-evolution-engine";
-import { createSudokuPuzzle, poissonDistribution, printSudoku } from "./utils";
+import { createSudokuPuzzle, printSudoku } from "./sudoku-utils";
 
 const sudoku: Sudoku = createSudokuPuzzle({
     emptyCellsCount: 43
