@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import { randInt } from './common';
 
 export type Matrix<T> = T[][];
@@ -89,7 +88,40 @@ export function propertyCrossover<T>(
     return [offspring1, offspring2];
 }
 
+/**
+ * Equal lists crossover
+ * @param parent1 
+ * @param parent2 
+ * @returns 
+ */
+export function equalListsCrossover<T>(
+    parent1: T[],
+    parent2: T[]
+): T[][] {
+    let offspring1: T[] = [...parent1];
+    let offspring2: T[] = [...parent2];
+
+    let crossoverCount = 1;
+
+    while(crossoverCount > 0) {
+        
+        const crossoverPoint = randInt(0, parent1.length);
+        // Copy rows up to the crossover point
+        for (let i = 0; i < crossoverPoint; i++) {
+            // Randomly choose a crossover point
+            const tmp = offspring1[i];
+            offspring1[i] = offspring2[i];
+            offspring2[i] = tmp;
+        }
+
+        crossoverCount--;
+    }
+
+    return [offspring1, offspring2];
+}
+
 export const Crossovers = {
     rowWiseMatrixCrossover,
-    propertyCrossover
+    propertyCrossover,
+    equalListsCrossover
 };

@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "sudoku": "ts-node src/examples/sudoku/main.ts",
-    "sat": "ts-node src/examples/3-sat/main.ts"
+    "sat": "ts-node src/examples/3-sat/main.ts",
+    "tsp": "ts-node src/examples/tsp/main.ts"
   },
   "author": "",
   "license": "ISC",

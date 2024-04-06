@@ -2,7 +2,10 @@ import { SATEvolutionEngine } from "./sat-evolution-engine";
 import { createSatFormula } from "./sat-utils";
 import fse from 'fs-extra';
 
-const formula = createSatFormula(1000, 1000);
+const formula = createSatFormula({
+    numOfVariables: 1000,
+    numOfClauses: 1000
+});
 
 // console.log(JSON.stringify(formula.clauses, null, 2));
 fse.writeFileSync('src/examples/3-sat/sat-example-problem.json', JSON.stringify(formula, null, 2));

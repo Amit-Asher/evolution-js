@@ -1,8 +1,22 @@
 import { randInt } from "../../framework/common";
 import { SatFormula } from "./sat-evolution-engine";
 
-export function createSatFormula(numOfVariables: number, numOfClauses: number): SatFormula {
 
+interface CreateSatFormulaInput {
+    /**
+     * Number of variables in the formula
+     */
+    numOfVariables: number;
+    /**
+     * Number of clauses in the formula
+     */
+    numOfClauses: number;
+}
+
+export function createSatFormula(input: CreateSatFormulaInput): SatFormula {
+
+    const { numOfVariables, numOfClauses } = input;
+    
     const formula: SatFormula = {
         variables: [],
         clauses: []

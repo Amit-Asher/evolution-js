@@ -1,0 +1,154 @@
+{
+  "solution": [
+    "Tarawa",
+    "Malabo",
+    "Santiago",
+    "Sao Tome",
+    "Algiers",
+    "Windhoek",
+    "Mogadishu",
+    "Valletta",
+    "Grytviken",
+    "Palikir",
+    "Vienna",
+    "Madrid",
+    "Seoul",
+    "Pristina",
+    "Helsinki",
+    "Nicosia",
+    "Belfast",
+    "Guatemala City",
+    "Juba",
+    "Noumea",
+    "Havana",
+    "Cardiff",
+    "Jakarta",
+    "Tegucigalpa",
+    "La Paz"
+  ],
+  "fitness": 36,
+  "uuid": "814ab804-ff81-4649-aa3a-48a4de27e3f2",
+  "generation": 85,
+  "details": [
+    {
+      "from": "Tarawa",
+      "to": "Malabo",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Malabo",
+      "to": "Santiago",
+      "distancesInHours": 2
+    },
+    {
+      "from": "Santiago",
+      "to": "Sao Tome",
+      "distancesInHours": 2
+    },
+    {
+      "from": "Sao Tome",
+      "to": "Algiers",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Algiers",
+      "to": "Windhoek",
+      "distancesInHours": 2
+    },
+    {
+      "from": "Windhoek",
+      "to": "Mogadishu",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Mogadishu",
+      "to": "Valletta",
+      "distancesInHours": 2
+    },
+    {
+      "from": "Valletta",
+      "to": "Grytviken",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Grytviken",
+      "to": "Palikir",
+      "distancesInHours": 2
+    },
+    {
+      "from": "Palikir",
+      "to": "Vienna",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Vienna",
+      "to": "Madrid",
+      "distancesInHours": 2
+    },
+    {
+      "from": "Madrid",
+      "to": "Seoul",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Seoul",
+      "to": "Pristina",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Pristina",
+      "to": "Helsinki",
+      "distancesInHours": 3
+    },
+    {
+      "from": "Helsinki",
+      "to": "Nicosia",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Nicosia",
+      "to": "Belfast",
+      "distancesInHours": 4
+    },
+    {
+      "from": "Belfast",
+      "to": "Guatemala City",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Guatemala City",
+      "to": "Juba",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Juba",
+      "to": "Noumea",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Noumea",
+      "to": "Havana",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Havana",
+      "to": "Cardiff",
+      "distancesInHours": 2
+    },
+    {
+      "from": "Cardiff",
+      "to": "Jakarta",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Jakarta",
+      "to": "Tegucigalpa",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Tegucigalpa",
+      "to": "La Paz",
+      "distancesInHours": 1
+    }
+  ]
+}
