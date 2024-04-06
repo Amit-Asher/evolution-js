@@ -11,12 +11,11 @@ export function randInt(low: number, high: number): number {
     return Math.floor(rng.random() * (high - low) + low);
 }
 
-export function poissonDistribution(): number {
+export function poissonDistribution(mean: number): number {
     let x = 0;
     let t = 0.0;
-    const MEAN = 2;
     while (true) {
-        t -= Math.log(rng.random()) / MEAN;
+        t -= Math.log(rng.random()) / mean;
         if (t > 1.0) {
             break;
         }

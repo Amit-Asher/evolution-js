@@ -129,7 +129,7 @@ export class SudokuEvolutionEngine extends AbstractEvolutionEngine<Sudoku> {
 
 
     public mutate(solution: Sudoku): Sudoku {
-        let mutationCount = poissonDistribution();
+        let mutationCount = poissonDistribution(2);
 
         while (mutationCount > 0) {
             let rowToMutate = this.rowsToMutate[randInt(0, this.rowsToMutate.length)].idx;

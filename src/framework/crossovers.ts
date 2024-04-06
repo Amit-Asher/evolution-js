@@ -70,15 +70,17 @@ export function propertyCrossover<T>(
         
         const crossoverPoint = randInt(0, Object.keys(parent1).length);
         const entries1 = Object.entries(parent1);
-        const entries2 = Object.entries(parent2);
-
         // Copy rows up to the crossover point
         for (let i = 0; i < crossoverPoint; i++) {
             // Randomly choose a crossover point
-            const [key1, value1] = entries1[i];
-            const [key2, value2] = entries2[i];
-            offspring1[key2] = value2;
-            offspring2[key1] = value1;
+            const [key, value1] = entries1[i];
+
+            if (!parent2[key]) {
+                continue;
+            }
+            const value2 = parent2[key];
+            offspring1[key] = value2;
+            offspring2[key] = value1;
         }
 
         crossoverCount--;

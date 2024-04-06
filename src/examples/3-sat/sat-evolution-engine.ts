@@ -1,212 +1,173 @@
-// import { Crossovers } from "../../framework/crossovers";
-// import { Selections } from "../../framework/selections";
-// import { AbstractEvolutionEngine, EngineConfig, EvaluatedIndividual, EvaluatedPopulation } from '../../framework/abstract-evolution-engine';
-// import { randInt } from "../../framework/common";
+import { poissonDistribution, randInt } from "../../framework/common";
+import { AbstractEvolutionEngine, EngineConfig, EvaluatedIndividual, EvaluatedPopulation } from "../../framework/abstract-evolution-engine";
+import { Crossovers } from "../../framework/crossovers";
+import { Selections } from "../../framework/selections";
 
-
-// export interface SatEngineConfig extends EngineConfig {
-//     formula: SatFormula;
-// }
+export interface SatEngineConfig extends EngineConfig {
+    formula: SatFormula;
+}
 
 export interface SatFormula {
     variables: string[];
     clauses: string[][];
 }
 
-// export interface SatAssignment {
-//     [variable: string]: boolean;
-// }
+export interface SatAssignment {
+    [variable: string]: boolean;
+}
 
-// export class SATEvolutionEngine extends AbstractEvolutionEngine<SatAssignment> {
-//     private formula: SatFormula;
+export class SATEvolutionEngine extends AbstractEvolutionEngine<SatAssignment> {
+    private formula: SatFormula;
 
-//     public constructor(config: SatEngineConfig) {
-//         super({
-//             populationSize: config.populationSize || 5000,
-//             maxGenerations: config.maxGenerations || 1000,
-//             elitism: config.elitism || 250,
-//             bestDirection: 'min'
-//         });
-//         this.formula = config.formula;
-//     }
+    public constructor(config: SatEngineConfig) {
+        super({
+            populationSize: config.populationSize || 5000,
+            maxGenerations: config.maxGenerations || 1000,
+            elitism: config.elitism || 250,
+            bestDirection: 'min'
+        });
+        this.formula = config.formula;
+    }
 
-//     public generateSolution(): SatAssignment {
-//         let solution: SatAssignment = {};
-//         for (const variable of this.formula.variables) {
-//             // randomly assign true or false to the variable
-//             solution[variable] = randInt(0, 2) === 0;
-//         }
-//         return solution;
-//     }
+    public generateSolution(): SatAssignment {
+        let solution: SatAssignment = {};
+        for (const variable of this.formula.variables) {
+            if (variable.startsWith('!')) {
+                continue;
+            }
+            // randomly assign true or false to the variable
+            solution[variable] = randInt(0, 2) === 0;
+            solution[`!${variable}`] = !solution[variable];
+        }
 
-//     public doCrossover(parent1: SatAssignment, parent2: SatAssignment): SatAssignment[] {
-//         return Crossovers.propertyCrossover(parent1, parent2);
-//     }
+        return solution;
+    }
 
-//     public doSelection(
-//         population: EvaluatedIndividual<SatAssignment>[],
-//         selectionCount: number
-//     ): EvaluatedIndividual<SatAssignment>[] {
-//         return Selections.tournamentSelection(population, selectionCount);
-//     }
+    public doCrossover(parent1: SatAssignment, parent2: SatAssignment): SatAssignment[] {
+        const cleanP1: SatAssignment = Object.assign({}, parent1);
+        const cleanP2: SatAssignment = Object.assign({}, parent2);
 
-//     private isCellFixed(i: number, j: number) {
-//         return this.puzzle[i][j] === 0;
-//     }
+        for (const variable of this.formula.variables) {
+            if (variable.startsWith('!')) {
+                delete cleanP1[variable];
+                delete cleanP2[variable];
+            }
+        }
 
-//     private isSwapAddFixedConflict(
-//         solution: Sudoku,
-//         rowToMutate: number,
-//         colToSwap1: number,
-//         colToSwap2: number
-//     ) {
-//         for (let row = 0; row < solution.length; row++) {
-//             // conflict between a fixed cell in the column of cell1 to cell2
-//             if (this.isCellFixed(row, colToSwap1) && solution[row][colToSwap1] === solution[rowToMutate][colToSwap2]) {
-//                 return true;
-//             }
+        const [offspring1, offspring2] = Crossovers.propertyCrossover(cleanP1, cleanP2);
+        
+        for (const variable of this.formula.variables) {
+            if (variable.startsWith('!')) {
+                continue;
+            }
+            offspring1[`!${variable}`] = !offspring1[variable];
+            offspring2[`!${variable}`] = !offspring2[variable];
+        }
 
-//             // conflict between a fixed cell in the column of cell2 to cell1
-//             if (this.isCellFixed(row, colToSwap2) && solution[row][colToSwap2] === solution[rowToMutate][colToSwap1]) {
-//                 return true;
-//             }
-//         }
+        return [offspring1, offspring2];    
+    }
 
-//         let subGridStartRow = Math.floor(rowToMutate / 3) * 3;
-//         let subGridStartCol = Math.floor(colToSwap1 / 3) * 3;
+    public doSelection(
+        population: EvaluatedIndividual<SatAssignment>[],
+        selectionCount: number
+    ): EvaluatedIndividual<SatAssignment>[] {
+        return Selections.tournamentSelection(population, selectionCount);
+    }
 
-//         for (let row = subGridStartRow; row < subGridStartRow + 3; row++) {
-//             for (let col = subGridStartCol; col < subGridStartCol + 3; col++) {
-//                 // conflict between a fixed cell in the sub-grid of cell1 to cell2
-//                 if (this.isCellFixed(row, col) && solution[row][col] === solution[rowToMutate][colToSwap2]) {
-//                     return true;
-//                 }
-//             }
-//         }
+    private isClauseSatisfied(solution: SatAssignment, clause: number): boolean {
+        const [v1, v2, v3] = this.formula.clauses[clause];
+        return solution[v1] || solution[v2] || solution[v3];
+    }
 
-//         subGridStartCol = Math.floor(colToSwap2 / 3) * 3;
-//         for (let row = subGridStartRow; row < subGridStartRow + 3; row++) {
-//             for (let col = subGridStartCol; col < subGridStartCol + 3; col++) {
-//                 // conflict between a fixed cell in the sub-grid of cell2 to cell1
-//                 if (this.isCellFixed(row, col) && solution[row][col] === solution[rowToMutate][colToSwap1]) {
-//                     return true;
-//                 }
-//             }
-//         }
+    private countSatisfiedClauses(solution: SatAssignment): number {
+        let count = 0;
+        for (let i = 0; i < this.formula.clauses.length; i++) {
+            if (this.isClauseSatisfied(solution, i)) {
+                count++;
+            }
+        }
+        return count;
+    }
 
-//         return false;
-//     }
+    public mutate(solution: SatAssignment): SatAssignment {
+        let mutationCount = poissonDistribution(2);
 
-//     public isSwapRemoveFixedConflict(solution: Sudoku, rowToMutate: number, colToSwap1: number, colToSwap2: number) {
-//         for (let row = 0; row < solution.length; row++) {
-//             // remove conflict between a fixed cell in the column of cell1 to cell1
-//             if (this.isCellFixed(row, colToSwap1) && solution[row][colToSwap1] === solution[row][colToSwap1]) {
-//                 return true;
-//             }
+        while (mutationCount > 0) {
+            // randomly choose 2 variables to mutate
+            let var1ToMutate = this.formula.variables[randInt(0, this.formula.variables.length)];
+            let var2ToMutate = this.formula.variables[randInt(0, this.formula.variables.length)];
 
-//             // remove conflict between a fixed cell in the column of cell2 to cell2
-//             if (this.isCellFixed(row, colToSwap2) && solution[row][colToSwap2] === solution[row][colToSwap2]) {
-//                 return true;
-//             }
-//         }
+            // remove the negation
+            if (var1ToMutate.startsWith('!')) {
+                var1ToMutate = var1ToMutate.substring(1);
+            }
 
-//         let subGridStartRow = Math.floor(rowToMutate / 3) * 3;
-//         let subGridStartCol = Math.floor(colToSwap1 / 3) * 3;
+            // remove the negation
+            if (var2ToMutate.startsWith('!')) {
+                var2ToMutate = var2ToMutate.substring(1);
+            }
 
-//         for (let row = subGridStartRow; row < subGridStartRow + 3; row++) {
-//             for (let col = subGridStartCol; col < subGridStartCol + 3; col++) {
-//                 // remove conflict between a fixed cell in the sub-grid of cell1 to cell1
-//                 if (this.isCellFixed(row, col) && solution[row][col] === solution[rowToMutate][colToSwap1]) {
-//                     return true;
-//                 }
-//             }
-//         }
+            // if the variables are the same, skip
+            if (var1ToMutate === var2ToMutate) {
+                continue;
+            }
 
-//         subGridStartCol = Math.floor(colToSwap2 / 3) * 3;
-//         for (let row = subGridStartRow; row < subGridStartRow + 3; row++) {
-//             for (let col = subGridStartCol; col < subGridStartCol + 3; col++) {
-//                 // remove conflict between a fixed cell in the sub-grid of cell2 to cell2
-//                 if (this.isCellFixed(row, col) && solution[row][col] === solution[rowToMutate][colToSwap2]) {
-//                     return true;
-//                 }
-//             }
-//         }
+            // get the values of the variables
+            const var1Value = solution[var1ToMutate];
+            const var2Value = solution[var2ToMutate];
 
-//         return false;
-//     }
+            // if the values are the same, skip
+            if (var1Value === var2Value) {
+                continue;
+            }
 
-//     public mutate(solution: SatAssignment): SatAssignment {
-//         let mutationCount = poissonDistribution();
+            // build a new optional solution
+            const tempSolution = Object.assign({}, solution);
+            tempSolution[var1ToMutate] = var2Value;
+            tempSolution[`!${var1ToMutate}`] = !var2Value;
+            tempSolution[var2ToMutate] = var1Value;
+            tempSolution[`!${var2ToMutate}`] = !var1Value;
 
-//         while (mutationCount > 0) {
-//             let rowToMutate = this.rowsToMutate[randInt(0, this.rowsToMutate.length)].idx;
-//             let rowNumbers = this.rowsToMutate.find(({ idx }) => idx === rowToMutate)?.numbers;
-//             if (!rowNumbers) {
-//                 continue;
-//             }
+            const oldScore = this.countSatisfiedClauses(solution);
+            const newScore = this.countSatisfiedClauses(tempSolution);
 
-//             const rowNumbersShuffled = rowNumbers.map(n => n);
-//             rowNumbersShuffled.sort(() => randInt(0, 2) - 1);
+            // if the new score is better or equal, accept the mutation
+            if (newScore >= oldScore) {
+                // Swap the values
+                const temp = solution[var1ToMutate];
+                solution[var1ToMutate] = solution[var2ToMutate];
+                solution[var2ToMutate] = temp;
+                mutationCount--;
+            }
+        }
 
-//             const idx1 = rowNumbersShuffled[0];
-//             const idx2 = rowNumbersShuffled[1];
+        return solution;
+    }
 
-//             if (!this.isSwapAddFixedConflict(solution, rowToMutate, idx1, idx2) ||
-//                 this.isSwapRemoveFixedConflict(solution, rowToMutate, idx1, idx2)
-//             ) {
-//                 // Swap the values
-//                 const temp = solution[rowToMutate][idx1];
-//                 solution[rowToMutate][idx1] = solution[rowToMutate][idx2];
-//                 solution[rowToMutate][idx2] = temp;
-//                 mutationCount--;
-//             }
-//         }
+    /**
+     * the lower the score the better the solution
+     */
+    public evaluate(solution: SatAssignment): number {
+        let score = 0;
 
-//         return solution;
-//     }
+        // check the clauses
+        for (let i = 0; i < this.formula.clauses.length; i++) {
+            if (!this.isClauseSatisfied(solution, i)) {
+                score++;
+            }
+        }
 
-//     /**
-//      * the lower the score the better the solution
-//      * sum of duplicates in columns and sub-grids
-//      */
-//     public evaluate(solution: SatAssignment): number {
-//         let score = 0;
+        return score;
+    }
 
-//         // check the numbers
-//         for (let j = 0; j < 9; j++) {
-//             const missingInRow = new Set<number>([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-//             for (let i = 0; i < 9; i++) {
-//                 missingInRow.delete(solution[i][j]);
-//             }
-//             score += missingInRow.size;
-//         }
+    public updateProgress(generation: number, evaulatedPopulation: EvaluatedPopulation<SatAssignment>): void {
+        const bestIndividual = evaulatedPopulation.bestIndividual;
+        if (generation % 1 === 0) {
+            console.log(`Generation: ${generation}, Best Score: ${bestIndividual.fitness}`);
+        }
+    }
 
-//         // check missing numbers in sub-grids
-//         for (let i = 0; i < 9; i += 3) {
-//             for (let j = 0; j < 9; j += 3) {
-//                 const missingInSubGrid = new Set<number>([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-//                 for (let k = i; k < i + 3; k++) {
-//                     for (let l = j; l < j + 3; l++) {
-//                         missingInSubGrid.delete(solution[k][l]);
-//                     }
-//                 }
-//                 score += missingInSubGrid.size;
-//             }
-//         }
-
-//         return score;
-//     }
-
-//     public updateProgress(generation: number, evaulatedPopulation: EvaluatedPopulation<SatAssignment>): void {
-//         const bestIndividual = evaulatedPopulation.bestIndividual;
-//         if (generation % 1 === 0) {
-//             console.log(`Generation: ${generation}, Best Score: ${bestIndividual.fitness}`);
-//         }
-//     }
-
-//     public isEvolutionFinished(generation: number, bestFitness: number): boolean {
-//         return generation === this.maxGenerations || bestFitness === 0;
-//     }
-// }
-
-export const test= 1;
+    public isEvolutionFinished(generation: number, bestFitness: number): boolean {
+        return generation === this.maxGenerations || bestFitness === 0;
+    }
+}
