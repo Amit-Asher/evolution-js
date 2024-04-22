@@ -1,153 +1,153 @@
 {
   "solution": [
-    "Tarawa",
+    "Hargeisa",
+    "San Salvador",
+    "Edinburgh",
+    "Lima",
+    "Wellington",
+    "Vaduz",
+    "Dushanbe",
+    "Belgrade",
+    "Tokyo",
     "Malabo",
-    "Santiago",
-    "Sao Tome",
-    "Algiers",
-    "Windhoek",
-    "Mogadishu",
-    "Valletta",
-    "Grytviken",
-    "Palikir",
-    "Vienna",
-    "Madrid",
-    "Seoul",
-    "Pristina",
-    "Helsinki",
-    "Nicosia",
-    "Belfast",
-    "Guatemala City",
-    "Juba",
-    "Noumea",
-    "Havana",
-    "Cardiff",
-    "Jakarta",
-    "Tegucigalpa",
-    "La Paz"
+    "La Paz",
+    "Tirana",
+    "St. George's",
+    "Bratislava",
+    "Vilnius",
+    "Ottawa",
+    "Abuja",
+    "Phnom Penh",
+    "Tbilisi",
+    "Maseru",
+    "Victoria",
+    "West Island",
+    "Stockholm",
+    "Tashkent",
+    "Moroni"
   ],
-  "fitness": 36,
-  "uuid": "814ab804-ff81-4649-aa3a-48a4de27e3f2",
-  "generation": 85,
+  "fitness": 34,
+  "uuid": "5c25d99d-4737-4163-bca7-f18c803b0172",
+  "generation": 93,
   "details": [
     {
-      "from": "Tarawa",
-      "to": "Malabo",
+      "from": "Hargeisa",
+      "to": "San Salvador",
       "distancesInHours": 1
     },
     {
-      "from": "Malabo",
-      "to": "Santiago",
+      "from": "San Salvador",
+      "to": "Edinburgh",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Edinburgh",
+      "to": "Lima",
       "distancesInHours": 2
     },
     {
-      "from": "Santiago",
-      "to": "Sao Tome",
-      "distancesInHours": 2
-    },
-    {
-      "from": "Sao Tome",
-      "to": "Algiers",
-      "distancesInHours": 1
-    },
-    {
-      "from": "Algiers",
-      "to": "Windhoek",
-      "distancesInHours": 2
-    },
-    {
-      "from": "Windhoek",
-      "to": "Mogadishu",
-      "distancesInHours": 1
-    },
-    {
-      "from": "Mogadishu",
-      "to": "Valletta",
-      "distancesInHours": 2
-    },
-    {
-      "from": "Valletta",
-      "to": "Grytviken",
-      "distancesInHours": 1
-    },
-    {
-      "from": "Grytviken",
-      "to": "Palikir",
-      "distancesInHours": 2
-    },
-    {
-      "from": "Palikir",
-      "to": "Vienna",
-      "distancesInHours": 1
-    },
-    {
-      "from": "Vienna",
-      "to": "Madrid",
-      "distancesInHours": 2
-    },
-    {
-      "from": "Madrid",
-      "to": "Seoul",
-      "distancesInHours": 1
-    },
-    {
-      "from": "Seoul",
-      "to": "Pristina",
-      "distancesInHours": 1
-    },
-    {
-      "from": "Pristina",
-      "to": "Helsinki",
+      "from": "Lima",
+      "to": "Wellington",
       "distancesInHours": 3
     },
     {
-      "from": "Helsinki",
-      "to": "Nicosia",
+      "from": "Wellington",
+      "to": "Vaduz",
       "distancesInHours": 1
     },
     {
-      "from": "Nicosia",
-      "to": "Belfast",
-      "distancesInHours": 4
-    },
-    {
-      "from": "Belfast",
-      "to": "Guatemala City",
-      "distancesInHours": 1
-    },
-    {
-      "from": "Guatemala City",
-      "to": "Juba",
-      "distancesInHours": 1
-    },
-    {
-      "from": "Juba",
-      "to": "Noumea",
-      "distancesInHours": 1
-    },
-    {
-      "from": "Noumea",
-      "to": "Havana",
-      "distancesInHours": 1
-    },
-    {
-      "from": "Havana",
-      "to": "Cardiff",
+      "from": "Vaduz",
+      "to": "Dushanbe",
       "distancesInHours": 2
     },
     {
-      "from": "Cardiff",
-      "to": "Jakarta",
+      "from": "Dushanbe",
+      "to": "Belgrade",
       "distancesInHours": 1
     },
     {
-      "from": "Jakarta",
-      "to": "Tegucigalpa",
-      "distancesInHours": 1
+      "from": "Belgrade",
+      "to": "Tokyo",
+      "distancesInHours": 3
     },
     {
-      "from": "Tegucigalpa",
+      "from": "Tokyo",
+      "to": "Malabo",
+      "distancesInHours": 3
+    },
+    {
+      "from": "Malabo",
       "to": "La Paz",
+      "distancesInHours": 1
+    },
+    {
+      "from": "La Paz",
+      "to": "Tirana",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Tirana",
+      "to": "St. George's",
+      "distancesInHours": 1
+    },
+    {
+      "from": "St. George's",
+      "to": "Bratislava",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Bratislava",
+      "to": "Vilnius",
+      "distancesInHours": 2
+    },
+    {
+      "from": "Vilnius",
+      "to": "Ottawa",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Ottawa",
+      "to": "Abuja",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Abuja",
+      "to": "Phnom Penh",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Phnom Penh",
+      "to": "Tbilisi",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Tbilisi",
+      "to": "Maseru",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Maseru",
+      "to": "Victoria",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Victoria",
+      "to": "West Island",
+      "distancesInHours": 2
+    },
+    {
+      "from": "West Island",
+      "to": "Stockholm",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Stockholm",
+      "to": "Tashkent",
+      "distancesInHours": 1
+    },
+    {
+      "from": "Tashkent",
+      "to": "Moroni",
       "distancesInHours": 1
     }
   ]
